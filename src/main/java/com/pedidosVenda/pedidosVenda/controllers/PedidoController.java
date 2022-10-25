@@ -1,8 +1,10 @@
 package com.pedidosVenda.pedidosVenda.controllers;
 
 import com.pedidosVenda.pedidosVenda.dtos.PedidoDto;
+import com.pedidosVenda.pedidosVenda.models.ClienteModel;
 import com.pedidosVenda.pedidosVenda.models.PedidoModel;
 import com.pedidosVenda.pedidosVenda.repositories.ClienteRepository;
+import com.pedidosVenda.pedidosVenda.services.ClienteService;
 import com.pedidosVenda.pedidosVenda.services.PedidoService;
 
 import java.io.File;
@@ -45,9 +47,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/Pedido")
 public class PedidoController { 
 
-    final ClienteRepository clienteService;
+    final ClienteService clienteService;
 
-    public PedidoController(ClienteRepository clienteService) {
+    public PedidoController(ClienteService clienteService) {
         this.clienteService = clienteService;
     }
     @Autowired
@@ -57,15 +59,19 @@ public class PedidoController {
 
 
     @PostMapping()
-    public @ResponseBody ResponseEntity<Object> addNewUser (@RequestBody @Valid PedidoDto PedidoDto) {
-        
-        if(!clienteService.existsById(UUID.fromString(PedidoDto.getIdCliente()))){
+    public @ResponseBody ResponseEntity<Object> addNovoPedido (@RequestBody @Valid PedidoDto PedidoDto) {
+        Optional<ClienteModel> clienteModelOptional = clienteService.findById(UUID.fromString(PedidoDto.getIdCliente()));
+        if(!clienteModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body("Não existe esse cliente");
+        }
+        if(clienteModelOptional.get().getStatus() == 0){
+            return ResponseEntity.status(HttpStatus.CREATED).body("Cliente desativado");
         }
         
         PedidoModel pedidoModel = new PedidoModel();
         BeanUtils.copyProperties(PedidoDto, pedidoModel);
         pedidoModel.setDataPedido(LocalDateTime.now(ZoneId.of("UTC")).toString());
+        pedidoModel.setStatus((PedidoDto.getStatus().equals("") ? 0 : 1));
         return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.save(pedidoModel));
     }
     
@@ -84,7 +90,7 @@ public class PedidoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletePedido(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> cancelarPedido(@PathVariable(value = "id") UUID id){
         Optional<PedidoModel> PedidoModelOptional = pedidoService.findById(id);
         if (!PedidoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
@@ -98,10 +104,10 @@ public class PedidoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> EncerrarPedido(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> PedidoDto){
+    public ResponseEntity<Object> modificarPedido(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> PedidoDto){
         Optional<PedidoModel> PedidoModelOptional = pedidoService.findById(id);
         if(!PedidoModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("pedido não existente");
         }
         PedidoDto.forEach((key, value) ->{
             String keyName = (String) key;
@@ -111,6 +117,19 @@ public class PedidoController {
         var PedidoModel = new PedidoModel();
         BeanUtils.copyProperties(PedidoModelOptional.get(), PedidoModel);
         return ResponseEntity.status(HttpStatus.OK).body(pedidoService.save(PedidoModel));
+        
+    }
+
+    @PatchMapping("/Status/{id}")
+    public ResponseEntity<Object> encerrarPedido(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> pedidoDto){
+        Optional<PedidoModel> PedidoModelOptional = pedidoService.findById(id);
+        if(!PedidoModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("pedido não existente");
+        }
+        var pedidoModel = new PedidoModel();
+        BeanUtils.copyProperties(PedidoModelOptional.get(), pedidoModel);
+        pedidoModel.setStatus(0);
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoService.save(pedidoModel));
         
     }
 }

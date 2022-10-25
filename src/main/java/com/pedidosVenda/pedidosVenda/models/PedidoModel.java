@@ -14,13 +14,13 @@ public class PedidoModel implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false, length = 255)
     private String idCliente;
     @Column(nullable = false, length = 280)
     private String dataPedido;
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false, length = 255)
     private String vendedor;
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false, length = 255)
     private String observacoes;
     @Column(nullable = false, length = 280)
     private int status;
