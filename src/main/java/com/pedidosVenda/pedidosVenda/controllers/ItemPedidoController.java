@@ -48,7 +48,7 @@ public class ItemPedidoController {
 
 
     @PostMapping()
-    public @ResponseBody ResponseEntity<Object> addNewUser (@RequestBody @Valid ItemPedidoDto ItemPedidoDto) {
+    public @ResponseBody ResponseEntity<Object> addItemPedido (@RequestBody @Valid ItemPedidoDto ItemPedidoDto) {
 
         ItemPedidoModel ItemPedidoModel = new ItemPedidoModel();
         BeanUtils.copyProperties(ItemPedidoDto, ItemPedidoModel);
@@ -62,7 +62,7 @@ public class ItemPedidoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneParkingSpot(@PathVariable(value = "id") UUID id) throws InterruptedException, FileNotFoundException{
+    public ResponseEntity<Object> getOneItemPedido(@PathVariable(value = "id") UUID id) throws InterruptedException, FileNotFoundException{
         Optional<ItemPedidoModel> ItemPedidoModelOptional = ItemPedidoService.findById(id);
         if (!ItemPedidoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
@@ -71,7 +71,7 @@ public class ItemPedidoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteParkingSpot(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> deleteItemPedido(@PathVariable(value = "id") UUID id){
         Optional<ItemPedidoModel> ItemPedidoModelOptional = ItemPedidoService.findById(id);
         if (!ItemPedidoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
@@ -85,7 +85,7 @@ public class ItemPedidoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> patchSkill(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> ItemPedidoDto){
+    public ResponseEntity<Object> patchItemPedido(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> ItemPedidoDto){
         Optional<ItemPedidoModel> ItemPedidoModelOptional = ItemPedidoService.findById(id);
         if(!ItemPedidoModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");

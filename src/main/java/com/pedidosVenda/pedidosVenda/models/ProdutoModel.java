@@ -14,11 +14,11 @@ public class ProdutoModel implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false,length = 255)
     private Integer qtdeDisponivel;
     @Column(nullable = false, length = 280)
     private double preco;
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false,length = 255)
     private String nomeProduto;
     @Column(nullable = false, length = 280)
 

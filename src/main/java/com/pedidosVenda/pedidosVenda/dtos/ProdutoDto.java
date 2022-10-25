@@ -9,27 +9,27 @@ public class ProdutoDto{
 
     @NotBlank
     @Size(max = 280)
-    private Integer qtdeDisponivel;
+    private String qtdeDisponivel;
     @NotBlank
     @Size(max = 280)
-    private double preco;
+    private String preco;
     @NotBlank
     @Size(max = 280)
     private String nomeProduto;
 
-    public Integer getQtdeDisponivel() {
+    public String getQtdeDisponivel() {
         return this.qtdeDisponivel;
     }
 
-    public void setQtdeDisponivel(Integer qtdeDisponivel) {
+    public void setQtdeDisponivel(String qtdeDisponivel) {
         this.qtdeDisponivel = qtdeDisponivel;
     }
 
-    public double getPreco() {
+    public String getPreco() {
         return this.preco;
     }
 
-    public void setPreco(double preco) {
+    public void setPreco(String preco) {
         this.preco = preco;
     }
 

@@ -44,39 +44,40 @@ public class ProdutoController {
 
     
     @Autowired
-    private ProdutoService ProdutoService;
+    private ProdutoService produtoService;
 
 
     @PostMapping()
-    public @ResponseBody ResponseEntity<Object> addNewUser (@RequestBody @Valid ProdutoDto ProdutoDto) {
-        ProdutoModel ProdutoModel = new ProdutoModel();
-        BeanUtils.copyProperties(ProdutoDto, ProdutoModel);
-        ProdutoService.save(ProdutoModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ProdutoService.save(ProdutoModel));
+    public @ResponseBody ResponseEntity<Object> addProduto (@RequestBody @Valid ProdutoDto ProdutoDto) {
+        ProdutoModel produtoModel = new ProdutoModel();
+        BeanUtils.copyProperties(ProdutoDto, produtoModel);
+        produtoModel.setPreco(Double.parseDouble(ProdutoDto.getPreco()));
+        produtoModel.setQtdeDisponivel(Integer.parseInt(ProdutoDto.getQtdeDisponivel()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(produtoModel));
     }
     
     @GetMapping
     public ResponseEntity<List<ProdutoModel>> getAllProdutos(){
-        return ResponseEntity.status(HttpStatus.OK).body(ProdutoService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(produtoService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneParkingSpot(@PathVariable(value = "id") UUID id) throws InterruptedException, FileNotFoundException{
-        Optional<ProdutoModel> ProdutoModelOptional = ProdutoService.findById(id);
+    public ResponseEntity<Object> ConsultaProduto(@PathVariable(value = "id") UUID id) throws InterruptedException, FileNotFoundException{
+        Optional<ProdutoModel> ProdutoModelOptional = produtoService.findById(id);
         if (!ProdutoModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto nao localizado");
         }
         return ResponseEntity.status(HttpStatus.OK).body(ProdutoModelOptional.get());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteParkingSpot(@PathVariable(value = "id") UUID id){
-        Optional<ProdutoModel> ProdutoModelOptional = ProdutoService.findById(id);
+    public ResponseEntity<Object> deleteProduto(@PathVariable(value = "id") UUID id){
+        Optional<ProdutoModel> ProdutoModelOptional = produtoService.findById(id);
         if (!ProdutoModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto nao localizado");
         }
         StringBuilder SucessfullMessage = new StringBuilder();
-        UUID skill = ProdutoService.delete(ProdutoModelOptional.get());
+        UUID skill = produtoService.delete(ProdutoModelOptional.get());
         SucessfullMessage.append("Skill ").append(skill).append(" deleted successfully.");
         
          
@@ -84,10 +85,10 @@ public class ProdutoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> patchSkill(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> ProdutoDto){
-        Optional<ProdutoModel> ProdutoModelOptional = ProdutoService.findById(id);
+    public ResponseEntity<Object> patchProduto(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> ProdutoDto){
+        Optional<ProdutoModel> ProdutoModelOptional = produtoService.findById(id);
         if(!ProdutoModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto nao localizado");
         }
         ProdutoDto.forEach((key, value) ->{
             String keyName = (String) key;
@@ -96,7 +97,7 @@ public class ProdutoController {
         });
         var ProdutoModel = new ProdutoModel();
         BeanUtils.copyProperties(ProdutoModelOptional.get(), ProdutoModel);
-        return ResponseEntity.status(HttpStatus.OK).body(ProdutoService.save(ProdutoModel));
+        return ResponseEntity.status(HttpStatus.OK).body(produtoService.save(ProdutoModel));
         
     }
 }
