@@ -85,7 +85,7 @@ public class PedidoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> patchSkill(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> PedidoDto){
+    public ResponseEntity<Object> EncerrarPedido(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> PedidoDto){
         Optional<PedidoModel> PedidoModelOptional = PedidoService.findById(id);
         if(!PedidoModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");

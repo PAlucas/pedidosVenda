@@ -49,7 +49,6 @@ public class ItemPedidoController {
 
     @PostMapping()
     public @ResponseBody ResponseEntity<Object> addNewUser (@RequestBody @Valid ItemPedidoDto ItemPedidoDto) {
-        // to grant that dont have that skill name in the database
 
         ItemPedidoModel ItemPedidoModel = new ItemPedidoModel();
         BeanUtils.copyProperties(ItemPedidoDto, ItemPedidoModel);

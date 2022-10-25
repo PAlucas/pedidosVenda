@@ -59,7 +59,7 @@ public class ClienteController {
     public ResponseEntity<Object> getCliente(@PathVariable(value = "id") UUID id) throws InterruptedException, FileNotFoundException{
         Optional<ClienteModel> ClienteModelOptional = clienteService.findById(id);
         if (!ClienteModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id nao identificado no banco dedos");
         }
         return ResponseEntity.status(HttpStatus.OK).body(ClienteModelOptional.get());
     }
@@ -91,7 +91,7 @@ public class ClienteController {
     public ResponseEntity<Object> deleteCliente(@PathVariable(value = "id") UUID id){
         Optional<ClienteModel> ClienteModelOptional = clienteService.findById(id);
         if (!ClienteModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id nao identificado no banco dedos");
         }
         StringBuilder SucessfullMessage = new StringBuilder();
         UUID skill = clienteService.delete(ClienteModelOptional.get());
@@ -105,7 +105,7 @@ public class ClienteController {
     public ResponseEntity<Object> patchCliente(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> ClienteDto){
         Optional<ClienteModel> ClienteModelOptional = clienteService.findById(id);
         if(!ClienteModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id nao identificado no banco dedos");
         }
         ClienteDto.forEach((key, value) ->{
             String keyName = (String) key;
