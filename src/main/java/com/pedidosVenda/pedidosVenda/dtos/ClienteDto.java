@@ -1,6 +1,8 @@
 package com.pedidosVenda.pedidosVenda.dtos;
 
 
+import java.sql.Date;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -16,6 +18,9 @@ public class ClienteDto {
     @NotBlank
     @Size(max = 280)
     private String limiteCartao;
+    @NotBlank
+    @Size(max = 280)
+    private String data;
 
 
     public String getNome() {
@@ -48,6 +53,14 @@ public class ClienteDto {
 
     public void setLimiteCartao(String limiteCartao) {
         this.limiteCartao = limiteCartao;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
 }

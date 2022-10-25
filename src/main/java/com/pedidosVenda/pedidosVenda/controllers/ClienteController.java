@@ -1,13 +1,13 @@
 package com.pedidosVenda.pedidosVenda.controllers;
 
+import com.pedidosVenda.pedidosVenda.Classes.Cliente;
 import com.pedidosVenda.pedidosVenda.dtos.ClienteDto;
 import com.pedidosVenda.pedidosVenda.models.ClienteModel;
 import com.pedidosVenda.pedidosVenda.services.ClienteService;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,7 +15,6 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.ReflectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,16 +40,14 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    @PostMapping("/Teste")
-    public void saveUser (@RequestBody @Valid ClienteDto clienteDto) {
+    @PostMapping
+    public @ResponseBody ResponseEntity<Object> saveUser (@RequestBody @Valid ClienteDto clienteDto) throws ParseException {
 
         ClienteModel clienteModel = new ClienteModel();
         BeanUtils.copyProperties(clienteDto, clienteModel);
-        clienteModel.setData(LocalDateTime.now(ZoneId.of("UTC")));
         clienteModel.setStatus((clienteDto.getStatus().equals("") ? 0 : 1));
         clienteModel.setLimiteCartao(Double.parseDouble(clienteDto.getLimiteCartao()));
-        clienteService.save(clienteModel);
-        //return ResponseEntity.status(HttpStatus.CREATED).body(ClienteModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.save(clienteModel));
     }
     
     @GetMapping
@@ -66,6 +62,29 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
         }
         return ResponseEntity.status(HttpStatus.OK).body(ClienteModelOptional.get());
+    }
+
+    @GetMapping("/Cartao/{id}") 
+    public ResponseEntity<Object> cartaoValidado(@PathVariable(value = "id") UUID id){
+        Optional<ClienteModel> clienteModelOptional = clienteService.findById(id);
+        if (!clienteModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id nao identificado no banco dedos");
+        }
+        Cliente cliente = new Cliente(null, null, 0, null, false, 0, null);
+        cliente.setCartaoCredito(clienteModelOptional.get().getCartaoCredito());
+        return ResponseEntity.status(HttpStatus.OK).body(cliente.validaCartao());
+    }
+
+    @GetMapping("/Idade/{id}")
+    public ResponseEntity<Object> getIdadeCliente(@PathVariable(value = "id") UUID id) throws InterruptedException, FileNotFoundException, ParseException{
+        Optional<ClienteModel> clienteModelOptional = clienteService.findById(id);
+        if (!clienteModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id nao identificado no banco dedos");
+        }
+        Cliente cliente = new Cliente(null, null, 0, null, false, 0, null);
+        
+        BeanUtils.copyProperties(clienteModelOptional, cliente);
+        return ResponseEntity.status(HttpStatus.OK).body(cliente.calcularIdade());
     }
 
     @DeleteMapping("/{id}")

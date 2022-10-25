@@ -19,7 +19,7 @@ public class ClienteModel implements Serializable{
     @Column(nullable = false, unique = true, length = 255)
     private String nome;
     @Column(nullable = false, length = 280)
-    private LocalDateTime data;
+    private String data;
     @Column(nullable = false, length = 255)
     private String cartaoCredito;
     @Column(nullable = false, length = 280)
@@ -43,11 +43,11 @@ public class ClienteModel implements Serializable{
         this.nome = nome;
     }
 
-    public LocalDateTime getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(LocalDateTime data) {
+    public void setData(String data) {
         this.data = data;
     }
 
