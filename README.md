@@ -23,12 +23,16 @@
 ### Pedido
 - GET localhost:8081/Pedido - traz todos os pedidos
 - GET localhost:8081/Pedido/{id} - traz pedido com determinado id
-- POST localhost:8081/Cliente - insere pedido
+- POST localhost:8081/Pedido - insere pedido
 - DELETE localhost:8081/Pedido/{id} - deleta pedido com determinado id
-- Patch localhost:8081/Pedido/{id} - muda algumas informações do cliente com determinado id
-- Patch localhost:8081/Pedido/Status/{id} - muda algumas informações do cliente com determinado id
+- Patch localhost:8081/Pedido/{id} - muda algumas informações do pedido com determinado id
+- Patch localhost:8081/Pedido/Status/{id} - muda algumas informações do pedido com determinado id
 ### ItemPedido
 
 ### Produto
-
+- GET localhost:8081/Produto - traz todos os produto
+- GET localhost:8081/Produto/{id} - traz produto com determinado id
+- POST localhost:8081/Produto - insere produto
+- DELETE localhost:8081/Produto/{id} - deleta produto com determinado id
+- Patch localhost:8081/Produto/{id} - muda algumas informações do produto com determinado id
 
