@@ -8,7 +8,7 @@
 ![image](https://user-images.githubusercontent.com/44738000/197779575-67ed7d87-9fea-4d57-8aa7-4bbef7d7a247.png)
 
 ## Diagrama de entidade e relacionamento
-![image](https://user-images.githubusercontent.com/44738000/197779424-745c68e1-61ce-4b67-8f36-a171857e2443.png)
+![image](https://user-images.githubusercontent.com/44738000/197824582-2d88c61b-3ecf-412a-a419-762ec2040893.png)
 
 ## Comandos por entidade
 
