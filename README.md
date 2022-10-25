@@ -28,11 +28,18 @@
 - Patch localhost:8081/Pedido/{id} - muda algumas informações do pedido com determinado id
 - Patch localhost:8081/Pedido/Status/{id} - muda algumas informações do pedido com determinado id
 ### ItemPedido
-
+- GET localhost:8081/ItemPedido - traz todos os itens pedidos
+- GET localhost:8081/ItemPedido/{id} - traz item pedido com determinado id
+- POST localhost:8081/ItemPedido - insere item pedido
+- DELETE localhost:8081/ItemPedido/{id} - deleta item pedido com determinado id
+- Patch localhost:8081/ItemPedido/{id} - muda algumas informações do item pedido com determinado id
 ### Produto
 - GET localhost:8081/Produto - traz todos os produto
 - GET localhost:8081/Produto/{id} - traz produto com determinado id
 - POST localhost:8081/Produto - insere produto
 - DELETE localhost:8081/Produto/{id} - deleta produto com determinado id
 - Patch localhost:8081/Produto/{id} - muda algumas informações do produto com determinado id
+
+### Observações
+- Criar o repositório e colocar o comando spring.jpa.hibernate.ddl-auto=create no application.properties
 
