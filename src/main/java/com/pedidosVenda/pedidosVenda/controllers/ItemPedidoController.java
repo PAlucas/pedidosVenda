@@ -2,7 +2,11 @@ package com.pedidosVenda.pedidosVenda.controllers;
 
 import com.pedidosVenda.pedidosVenda.dtos.ItemPedidoDto;
 import com.pedidosVenda.pedidosVenda.models.ItemPedidoModel;
+import com.pedidosVenda.pedidosVenda.models.PedidoModel;
+import com.pedidosVenda.pedidosVenda.models.ProdutoModel;
 import com.pedidosVenda.pedidosVenda.services.ItemPedidoService;
+import com.pedidosVenda.pedidosVenda.services.PedidoService;
+import com.pedidosVenda.pedidosVenda.services.ProdutoService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,13 +46,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ItemPedido")
 public class ItemPedidoController { 
 
-    
+    final ProdutoService produtoService;
+    final PedidoService pedidoService;
+
+    public ItemPedidoController(ProdutoService produtoService, PedidoService pedidoService) {
+        this.produtoService = produtoService;
+        this.pedidoService = pedidoService;
+    }
     @Autowired
     private ItemPedidoService ItemPedidoService;
 
 
     @PostMapping()
     public @ResponseBody ResponseEntity<Object> addItemPedido (@RequestBody @Valid ItemPedidoDto ItemPedidoDto) {
+        Optional<PedidoModel> pedidoModelOptional = pedidoService.findById(UUID.fromString(ItemPedidoDto.getIdPedido()));
+        Optional<ProdutoModel> produtoModelOptional = produtoService.findById(UUID.fromString(ItemPedidoDto.getIdProduto()));
+        if(!pedidoModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body("Não existe esse pedido");
+        }
+        if(!produtoModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body("Não existe esse produto");
+        }
+        
 
         ItemPedidoModel ItemPedidoModel = new ItemPedidoModel();
         BeanUtils.copyProperties(ItemPedidoDto, ItemPedidoModel);
