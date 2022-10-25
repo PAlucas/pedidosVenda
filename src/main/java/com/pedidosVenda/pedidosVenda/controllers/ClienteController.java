@@ -95,7 +95,7 @@ public class ClienteController {
         }
         StringBuilder SucessfullMessage = new StringBuilder();
         UUID skill = clienteService.delete(ClienteModelOptional.get());
-        SucessfullMessage.append("Skill ").append(skill).append(" deleted successfully.");
+        SucessfullMessage.append("Id ").append(skill).append(" deletada com sucesso!");
         
          
         return ResponseEntity.status(HttpStatus.OK).body(SucessfullMessage);

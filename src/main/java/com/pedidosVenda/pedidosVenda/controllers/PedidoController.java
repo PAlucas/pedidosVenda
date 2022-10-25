@@ -2,6 +2,7 @@ package com.pedidosVenda.pedidosVenda.controllers;
 
 import com.pedidosVenda.pedidosVenda.dtos.PedidoDto;
 import com.pedidosVenda.pedidosVenda.models.PedidoModel;
+import com.pedidosVenda.pedidosVenda.repositories.ClienteRepository;
 import com.pedidosVenda.pedidosVenda.services.PedidoService;
 
 import java.io.File;
@@ -10,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,28 +45,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/Pedido")
 public class PedidoController { 
 
-    
+    final ClienteRepository clienteService;
+
+    public PedidoController(ClienteRepository clienteService) {
+        this.clienteService = clienteService;
+    }
     @Autowired
-    private PedidoService PedidoService;
+    private PedidoService pedidoService;
+
+    
 
 
     @PostMapping()
     public @ResponseBody ResponseEntity<Object> addNewUser (@RequestBody @Valid PedidoDto PedidoDto) {
-
-        PedidoModel PedidoModel = new PedidoModel();
-        BeanUtils.copyProperties(PedidoDto, PedidoModel);
-        PedidoService.save(PedidoModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(PedidoService.save(PedidoModel));
+        
+        if(!clienteService.existsById(UUID.fromString(PedidoDto.getIdCliente()))){
+            return ResponseEntity.status(HttpStatus.CREATED).body("Não existe esse cliente");
+        }
+        
+        PedidoModel pedidoModel = new PedidoModel();
+        BeanUtils.copyProperties(PedidoDto, pedidoModel);
+        pedidoModel.setDataPedido(LocalDateTime.now(ZoneId.of("UTC")).toString());
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.save(pedidoModel));
     }
     
     @GetMapping
     public ResponseEntity<List<PedidoModel>> getAllPedidos(){
-        return ResponseEntity.status(HttpStatus.OK).body(PedidoService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneParkingSpot(@PathVariable(value = "id") UUID id) throws InterruptedException, FileNotFoundException{
-        Optional<PedidoModel> PedidoModelOptional = PedidoService.findById(id);
+    public ResponseEntity<Object> getPedidoEspecifico(@PathVariable(value = "id") UUID id) throws InterruptedException, FileNotFoundException{
+        Optional<PedidoModel> PedidoModelOptional = pedidoService.findById(id);
         if (!PedidoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
         }
@@ -71,14 +84,14 @@ public class PedidoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteParkingSpot(@PathVariable(value = "id") UUID id){
-        Optional<PedidoModel> PedidoModelOptional = PedidoService.findById(id);
+    public ResponseEntity<Object> deletePedido(@PathVariable(value = "id") UUID id){
+        Optional<PedidoModel> PedidoModelOptional = pedidoService.findById(id);
         if (!PedidoModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
         }
         StringBuilder SucessfullMessage = new StringBuilder();
-        UUID skill = PedidoService.delete(PedidoModelOptional.get());
-        SucessfullMessage.append("Skill ").append(skill).append(" deleted successfully.");
+        UUID skill = pedidoService.delete(PedidoModelOptional.get());
+        SucessfullMessage.append("Id ").append(skill).append(" deletada com sucesso");
         
          
         return ResponseEntity.status(HttpStatus.OK).body(SucessfullMessage);
@@ -86,7 +99,7 @@ public class PedidoController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> EncerrarPedido(@PathVariable(value = "id") UUID id, @RequestBody @Valid Map<Object, Object> PedidoDto){
-        Optional<PedidoModel> PedidoModelOptional = PedidoService.findById(id);
+        Optional<PedidoModel> PedidoModelOptional = pedidoService.findById(id);
         if(!PedidoModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill not found in data base");
         }
@@ -97,7 +110,7 @@ public class PedidoController {
         });
         var PedidoModel = new PedidoModel();
         BeanUtils.copyProperties(PedidoModelOptional.get(), PedidoModel);
-        return ResponseEntity.status(HttpStatus.OK).body(PedidoService.save(PedidoModel));
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoService.save(PedidoModel));
         
     }
 }

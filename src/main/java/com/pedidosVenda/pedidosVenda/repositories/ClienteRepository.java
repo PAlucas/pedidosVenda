@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 //Interface for decouple purpose
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteModel, UUID>{
-
+    boolean existsById(UUID id);
 }

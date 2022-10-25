@@ -11,35 +11,16 @@ public class PedidoDto{
 
     @NotBlank
     @Size(max = 280)
-    private Integer idCliente;
-    @NotBlank
-    @Size(max = 280)
-    private Date dataPedido;
-    @NotBlank
-    @Size(max = 280)
     private String vendedor;
     @NotBlank
     @Size(max = 280)
     private String observacoes;
     @NotBlank
     @Size(max = 280)
-    private boolean status;
-
-    public Integer getIdCliente() {
-        return this.idCliente;
-    }
-
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public Date getDataPedido() {
-        return this.dataPedido;
-    }
-
-    public void setDataPedido(Date dataPedido) {
-        this.dataPedido = dataPedido;
-    }
+    private String status;
+    @NotBlank
+    @Size(max = 280)
+    private String idCliente;
 
     public String getVendedor() {
         return this.vendedor;
@@ -57,16 +38,20 @@ public class PedidoDto{
         this.observacoes = observacoes;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return this.status;
     }
 
-    public boolean getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getIdCliente() {
+        return this.idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 
 

@@ -15,15 +15,15 @@ public class PedidoModel implements Serializable{
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
     @Column(nullable = false, unique = true, length = 255)
-    private Integer idCliente;
+    private String idCliente;
     @Column(nullable = false, length = 280)
-    private Date dataPedido;
+    private String dataPedido;
     @Column(nullable = false, unique = true, length = 255)
     private String vendedor;
     @Column(nullable = false, unique = true, length = 255)
     private String observacoes;
     @Column(nullable = false, length = 280)
-    private boolean status;
+    private int status;
 
     public UUID getId() {
         return this.id;
@@ -33,19 +33,19 @@ public class PedidoModel implements Serializable{
         this.id = id;
     }
 
-    public Integer getIdCliente() {
+    public String getIdCliente() {
         return this.idCliente;
     }
 
-    public void setIdCliente(Integer idCliente) {
+    public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
     }
 
-    public Date getDataPedido() {
+    public String getDataPedido() {
         return this.dataPedido;
     }
 
-    public void setDataPedido(Date dataPedido) {
+    public void setDataPedido(String dataPedido) {
         this.dataPedido = dataPedido;
     }
 
@@ -65,15 +65,11 @@ public class PedidoModel implements Serializable{
         this.observacoes = observacoes;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return this.status;
     }
 
-    public boolean getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

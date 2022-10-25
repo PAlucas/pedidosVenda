@@ -28,6 +28,10 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
+    public boolean existsById(UUID id) {
+        return clienteRepository.existsById(id);
+    }
+
     public Optional<ClienteModel> findById(UUID id) {
         return clienteRepository.findById(id);
     }
