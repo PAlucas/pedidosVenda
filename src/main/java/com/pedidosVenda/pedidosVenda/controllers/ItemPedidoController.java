@@ -52,7 +52,8 @@ public class ItemPedidoController {
 
         ItemPedidoModel ItemPedidoModel = new ItemPedidoModel();
         BeanUtils.copyProperties(ItemPedidoDto, ItemPedidoModel);
-        ItemPedidoService.save(ItemPedidoModel);
+        ItemPedidoModel.setQuantidade(Integer.parseInt(ItemPedidoDto.getQuantidade()));
+        ItemPedidoModel.setPreco(Float.parseFloat(ItemPedidoDto.getPreco()));
         return ResponseEntity.status(HttpStatus.CREATED).body(ItemPedidoService.save(ItemPedidoModel));
     }
     

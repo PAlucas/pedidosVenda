@@ -14,27 +14,37 @@ public class ItemPedidoModel implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
-    @Column(nullable = false, unique = true, length = 255)
-    private Integer idProduto;
-    @Column(nullable = false, length = 280)
+    @Column(nullable = false,length = 255)
+    private String idProduto;
+    @Column(nullable = false,length = 255)
+    private String idPedido;
+    @Column(nullable = false,length = 280)
     private double preco;
-    @Column(nullable = false, unique = true, length = 255)
-    private Integer quantidade;
+    @Column(nullable = false,length = 255)
+    private int quantidade;
 
     public UUID getId() {
         return this.id;
     }
 
-    public void setId(UUID idPedido) {
-        this.id = idPedido;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public Integer getIdProduto() {
+    public String getIdProduto() {
         return this.idProduto;
     }
 
-    public void setIdProduto(Integer idProduto) {
+    public void setIdProduto(String idProduto) {
         this.idProduto = idProduto;
+    }
+
+    public String getIdPedido() {
+        return this.idPedido;
+    }
+
+    public void setIdPedido(String idPedido) {
+        this.idPedido = idPedido;
     }
 
     public double getPreco() {
@@ -45,11 +55,11 @@ public class ItemPedidoModel implements Serializable{
         this.preco = preco;
     }
 
-    public Integer getQuantidade() {
+    public int getQuantidade() {
         return this.quantidade;
     }
 
-    public void setQuantidade(Integer quantidade) {
+    public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
     

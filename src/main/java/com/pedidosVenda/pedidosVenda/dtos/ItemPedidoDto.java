@@ -9,35 +9,46 @@ public class ItemPedidoDto {
     
     @NotBlank
     @Size(max = 280)
-    private Integer idProduto;
+    private String idProduto;
     @NotBlank
     @Size(max = 280)
-    private double preco;
+    private String idPedido;
     @NotBlank
     @Size(max = 280)
-    private Integer quantidade;
+    private String preco;
+    @NotBlank
+    @Size(max = 280)
+    private String quantidade;
 
-    public Integer getIdProduto() {
+    public String getIdProduto() {
         return this.idProduto;
     }
 
-    public void setIdProduto(Integer idProduto) {
+    public void setIdProduto(String idProduto) {
         this.idProduto = idProduto;
     }
 
-    public double getPreco() {
+    public String getIdPedido() {
+        return this.idPedido;
+    }
+
+    public void setIdPedido(String idPedido) {
+        this.idPedido = idPedido;
+    }
+
+    public String getPreco() {
         return this.preco;
     }
 
-    public void setPreco(double preco) {
+    public void setPreco(String preco) {
         this.preco = preco;
     }
 
-    public Integer getQuantidade() {
+    public String getQuantidade() {
         return this.quantidade;
     }
 
-    public void setQuantidade(Integer quantidade) {
+    public void setQuantidade(String quantidade) {
         this.quantidade = quantidade;
     }
 
